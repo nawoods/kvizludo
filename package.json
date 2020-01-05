@@ -1,6 +1,6 @@
 {
   "name": "kvizludo",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Multiple-choice quiz game",
   "main": "server.js",
   "scripts": {

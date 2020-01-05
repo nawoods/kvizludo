@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, ListGroupItem, Button, Table } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import QuestionModal from './QuestionModal';
 
 class QuestionList extends Component {
   constructor(props) {
@@ -21,15 +22,7 @@ class QuestionList extends Component {
       });
   };
 
-  addQuestion = () => {
-    const newQuestion = {
-      questionText: prompt('Demando'),
-      correctAnswer: prompt('Ĝusta respondo'),
-      incorrectAnswer1: prompt('Malĝusta respondo 1'),
-      incorrectAnswer2: prompt('Malĝusta respondo 2'),
-      incorrectAnswer3: prompt('Malĝusta respondo 3')
-    };
-
+  addQuestion = (newQuestion) => {
     if (!newQuestion) return;
 
     fetch('/api/questions', {
@@ -63,13 +56,7 @@ class QuestionList extends Component {
     const { questions } = this.state;
     return(
       <Container>
-        <Button 
-          color="dark" 
-          style={{marginBottom:'2rem'}}
-          onClick={this.addQuestion}
-        >
-          Aldoni demandon
-        </Button>
+        <QuestionModal onSubmit={this.addQuestion} />
         <TransitionGroup className="question-list">
           {questions.map((question) => (
             <CSSTransition key={question._id} timeout={500} classNames="fade">

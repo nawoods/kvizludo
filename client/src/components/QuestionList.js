@@ -40,6 +40,25 @@ class QuestionList extends Component {
       });
   };
 
+  editQuestion = editedQuestion => {
+    const otherQuestions = this.state.questions
+        .filter(question => question._id !== editedQuestion._id);
+
+    fetch(`/api/questions/${editedQuestion._id}`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(editedQuestion)
+    })
+      .then(res => res.json())
+      .then(res => {
+        this.setState(state => ({
+          questions: [...otherQuestions, res]
+        }))
+      });
+  }
+
   removeQuestion = id => {
     fetch(`/api/questions/${id}`, { method: 'DELETE' })
       .then(res => res.json())
@@ -61,6 +80,10 @@ class QuestionList extends Component {
           {questions.map((question) => (
             <CSSTransition key={question._id} timeout={500} classNames="fade">
               <ListGroupItem>
+                <QuestionModal
+                  existingQuestion={question}
+                  onSubmit={this.editQuestion}
+                />
                 <Button
                   className="remove-btn"
                   color="danger"

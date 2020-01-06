@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   Button,
   Container,
@@ -18,12 +18,13 @@ class QuestionModal extends Component {
 
     this.state = {
       modal: false,
-      newQuestion: {}
+      newQuestion: this.props.existingQuestion ? this.props.existingQuestion : {}
     }
   }
 
   propTypes = {
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    existingQuestion: PropTypes.object
   }
 
   onChange = e => {
@@ -45,63 +46,65 @@ class QuestionModal extends Component {
     })
   }
 
+  questionModalInput = fieldName => (
+    <Input
+      type='text'
+      name={fieldName}
+      id={fieldName}
+      placeholder={this.props.existingQuestion ?
+        this.props.existingQuestion[fieldName]
+        : ''}
+      onChange={this.onChange}></Input>
+  )
+
   render() {
     return (
-      <Container>
-        <Button 
-          color="dark" 
-          style={{marginBottom:'2rem'}}
-          onClick={this.toggle}
-        >
-          Aldoni demandon
-        </Button>
+      <Fragment>
+        { this.props.existingQuestion ?
+          <Button
+            className="edit-btn"
+            color="warning"
+            size="sm"
+            onClick={this.toggle}
+          >🖊️</Button>
+        :
+          <Button 
+            color="dark" 
+            style={{marginBottom:'2rem'}}
+            onClick={this.toggle}
+          >
+            Aldoni demandon
+          </Button>
+        }
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Aldoni demandon</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for='questionText'>Demando</Label>
-                <Input
-                  type='text'
-                  name='questionText'
-                  id='questionText'
-                  onChange={this.onChange}></Input>
+                {this.questionModalInput('questionText')}
               </FormGroup>
               <FormGroup>
                 <Label for='correctAnswer'>Ĝusta respondo</Label>
-                <Input
-                  type='text'
-                  name='correctAnswer'
-                  id='correctAnswer'
-                  onChange={this.onChange}></Input>
+                {this.questionModalInput('correctAnswer')}
               </FormGroup>
               <FormGroup>
                 <Label for='incorrectAnswer1'>Malĝustaj respondoj</Label>
-                <Input
-                  type='text'
-                  name='incorrectAnswer1'
-                  id='incorrectAnswer1'
-                  onChange={this.onChange}></Input>
-                </FormGroup>
-                <FormGroup>
-                <Input
-                  type='text'
-                  name='incorrectAnswer2'
-                  id='incorrectAnswer2'
-                  onChange={this.onChange}></Input>
-                </FormGroup>
-                <FormGroup>
-                <Input
-                  type='text'
-                  name='incorrectAnswer3'
-                  id='incorrectAnswer3'
-                  onChange={this.onChange}></Input>
+                {this.questionModalInput('incorrectAnswer1')}
               </FormGroup>
-              <Button>Aldoni</Button>
+              <FormGroup>
+                {this.questionModalInput('incorrectAnswer2')}
+              </FormGroup>
+              <FormGroup>
+                {this.questionModalInput('incorrectAnswer3')}
+              </FormGroup>
+              <Button color="dark">
+                {this.props.existingQuestion ? `Modifi` : `Aldoni`}
+              </Button>
             </Form>
           </ModalBody>
         </Modal>
-      </Container>
+      </Fragment>
 
     );
   }

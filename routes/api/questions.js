@@ -34,6 +34,15 @@ router.post('/', (req, res) => {
   newQuestion.save().then(question => res.json(question));
 });
 
+// @route   PUT api/questions/:id
+// @desc    Edit A Question
+// @access  Public
+router.put('/:id', (req, res) => {
+  Question.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then(question => res.json(question))
+    .catch(err => res.status(404).json({ success: false }));
+})
+
 // @route   DELETE api/questions/:id
 // @desc    Delete A Question
 // @access  Public

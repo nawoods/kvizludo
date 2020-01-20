@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import {
   Button,
-  Container,
   Modal,
   ModalHeader,
   ModalBody,
@@ -22,7 +21,7 @@ class QuestionModal extends Component {
     }
   }
 
-  propTypes = {
+  static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     existingQuestion: PropTypes.object
   }

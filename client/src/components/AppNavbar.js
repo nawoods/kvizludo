@@ -9,6 +9,8 @@ import {
   NavLink,
   Container
 } from 'reactstrap';
+import LoginModal from './auth/LoginModal';
+import PropTypes from 'prop-types';
 
 class AppNavbar extends Component {
   constructor(props) {
@@ -16,7 +18,11 @@ class AppNavbar extends Component {
     this.state = {
       isOpen: false
     }
+  }
 
+  static propTypes = {
+    login: PropTypes.func.isRequired,
+    error: PropTypes.string
   }
 
   toggle = () => {
@@ -37,7 +43,11 @@ class AppNavbar extends Component {
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>
                 <NavItem>
-                  <NavLink href="https://www.example.com">Example</NavLink>
+                  <LoginModal 
+                    onSubmit={this.props.login} 
+                    user={this.props.user}
+                    error={this.props.error} 
+                  />
                 </NavItem>
               </Nav>
             </Collapse>
